@@ -1,10 +1,15 @@
-
-int SensorPin = A1;
+#define KEY_NONE 0
+#define KEY_PREV 1
+#define KEY_NEXT 2
+#define KEY_SELECT 3
+#define KEY_BACK 4
 #include <DHT.h>
 #include <DHT_U.h>
 #define Type DHT11
-
 #include "U8glib.h"
+
+int SensorPin = A1;
+
 U8GLIB_ST7920_128X64_4X u8g(13, 11, 10);  // SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
 int dhtPin = 2;
 DHT HT(dhtPin, Type);
@@ -14,20 +19,7 @@ int Final2 = 0;
 int Final1 = 0;
 float tempF;
 int firstPage;
-#define KEY_NONE 0
-#define KEY_PREV 1
-#define KEY_NEXT 2
-#define KEY_SELECT 3
-#define KEY_BACK 4
 
-// DOGS102 shield configuration values
-//uint8_t uiKeyPrev = 2;
-//uint8_t uiKeyNext = 4;
-//uint8_t uiKeySelect = 5;
-//uint8_t uiKeyBack = 3;
-
-// DOGM128-Shield	 configuration values
-// DOGXL60-Shield configuration values
 uint8_t uiKeyPrev = A2;
 uint8_t uiKeyNext = 3;
 uint8_t uiKeySelect = 4;
@@ -54,14 +46,35 @@ void Limonero() {
     {
       tanque();
     }
-  
-    if(tempC >-5 && tempC<30) 
+
+    u8g.firstPage();
+    do
     {
-      u8g.drawStr(0, 30, "Dejar la planta");
-    }
-    else{
-      u8g.drawStr(40, 30, "Entrar la planta");
-    }
+      
+      u8g.setFont(u8g_font_unifont);
+      
+      u8g.drawStr(0, 30, "LIMONERO");
+      u8g.drawStr(0, 60, "H.:");
+      
+      
+      char texto[7];
+      itoa(humedad,texto,10);
+      u8g.drawStr(40, 60, texto);
+
+      
+   //   u8g.drawStr(120, 60, DEC(tempC));
+
+      if(tempC >-5 && tempC<30) 
+      {
+        //u8g.drawStr(0, 30, "Dejar la planta");
+      }
+      else
+      {
+        //u8g.drawStr(40, 30, "Entrar la planta");
+      }
+    
+      delay(100);
+    }while(u8g.nextPage());
   
  
 }
