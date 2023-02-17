@@ -35,28 +35,9 @@ uint8_t uiKeyCodeFirst = KEY_NONE;
 uint8_t uiKeyCodeSecond = KEY_NONE;
 uint8_t uiKeyCode = KEY_NONE;
 
-void tanque() {
-  Final1 = digitalRead(7);
-  Final2 = digitalRead(6);
 
-  if ( Final1 == 1, Final2 == 0) {
-    /* encedido de bomba de agua cuando el taque tenga agua */
-    digitalWrite(12, HIGH);
-  }
-  else {
-    digitalWrite(12, LOW);
-  }
-}
-
-void Limonero() {
-
-  Serial.println("LIMONERO");
-
-  int humedad = analogRead(SensorPin);
-  Serial.println(humedad);
-  Serial.println(tempC);
-
-
+void bluetooth()
+{
   Serial.print("Humedad Relativa: ");
   Serial.print(humidity);
   Serial.print("% / Temperatura: ");
@@ -73,6 +54,31 @@ void Limonero() {
   Serial.print(outputVoltage);
   Serial.print(" / UV Intensity (mW/cm^2): ");
   Serial.print(uvIntensity);
+}
+
+
+
+
+void tanque() {
+  Final1 = digitalRead(7);
+  Final2 = digitalRead(6);
+
+  if ( Final1 == 1, Final2 == 0) {
+    /* encedido de bomba de agua cuando el taque tenga agua */
+    digitalWrite(12, HIGH);
+  }
+  else {
+    digitalWrite(12, LOW);
+  }
+}
+
+
+void Limonero() {
+
+  int humedad = analogRead(SensorPin);
+  Serial.println(humedad);
+  Serial.println(tempC);
+
 
   if (humedad >= 460)
   {
@@ -91,25 +97,8 @@ void Limonero() {
 
     u8g.drawStr(0, 0, "LIMONERO");
 
-    u8g.drawStr(0, 10, "Humedad:");
-    char texto[7];
-    itoa(humedad, texto, 10);
-    u8g.drawStr(55, 10, texto);
-    u8g.drawStr(70, 10, "%");
-
-    u8g.drawStr(0, 20, "Temp.:");
-    char Ctemp[7];
-    itoa(tempC, Ctemp, 10);
-    u8g.drawStr(60, 20, Ctemp);
-    u8g.drawStr(75, 20, "°C");
-
-
-    u8g.drawStr(0, 30, "UV Ray Intensity");
-    char uv[7];
-    itoa(uvIntensity, uv, 10);
-    u8g.drawStr(40, 30, uv);
-    u8g.drawStr(80, 30, "mW/cm^2");
-
+    drawDatos();
+    
     if (tempC > -5 && tempC < 30)
     {
       u8g.drawStr(0, 50, "Dejar la planta");
@@ -126,7 +115,6 @@ void Limonero() {
 
 void Cerezo() {
 
-  Serial.println("Cerezo");
   int humedad = analogRead(SensorPin);
   Serial.println(humedad);
 
@@ -139,48 +127,14 @@ void Cerezo() {
     tanque();
   }
 
-  Serial.print("Humedad Relativa: ");
-  Serial.print(humidity);
-  Serial.print("% / Temperatura: ");
-  Serial.print(tempC);
-  Serial.print("ºC / ");
-  Serial.print(tempF);
-  Serial.println("ºF");
-
-  Serial.print("output: ");
-  Serial.print(refLevel);
-  Serial.print("ML8511 output: ");
-  Serial.print(uvLevel);
-  Serial.print(" / ML8511 voltage: ");
-  Serial.print(outputVoltage);
-  Serial.print(" / UV Intensity (mW/cm^2): ");
-  Serial.print(uvIntensity);
-
-
   u8g.firstPage();
   do {
     u8g.setFont(u8g_font_5x7);
 
     u8g.drawStr(0, 0, "Cerezo");
 
-    u8g.drawStr(0, 10, "Humedad: ");
-    char texto[7];
-    itoa(humedad, texto, 10);
-    u8g.drawStr(50, 10, texto);
-    u8g.drawStr(60, 10, "%");
-
-    u8g.drawStr(0, 20, "Temp.: ");
-    char Ctemp[7];
-    itoa(tempC, Ctemp, 10);
-    u8g.drawStr(45, 20, Ctemp);
-    u8g.drawStr(65, 20, "*C");
-
-    u8g.drawStr(0, 30, "UV Ray Intensity");
-    char uv[7];
-    itoa(uvIntensity, uv, 10);
-    u8g.drawStr(40, 30, uv);
-    u8g.drawStr(80, 30, "mW/cm^2");
-
+    drawDatos();
+   
     if (tempC > 7 && tempC < 28)
     {
       u8g.drawStr(0, 50, "Dejar la planta");
@@ -196,28 +150,7 @@ void Cerezo() {
 
 void Lavanda() {
 
-  Serial.println("Lavanda");
   int humedad = analogRead(SensorPin);
-  Serial.println(humedad);
-
-
-  Serial.print("Humedad Relativa: ");
-  Serial.print(humidity);
-  Serial.print("% / Temperatura: ");
-  Serial.print(tempC);
-  Serial.print("ºC / ");
-  Serial.print(tempF);
-  Serial.println("ºF");
-
-
-  Serial.print("output: ");
-  Serial.print(refLevel);
-  Serial.print("ML8511 output: ");
-  Serial.print(uvLevel);
-  Serial.print(" / ML8511 voltage: ");
-  Serial.print(outputVoltage);
-  Serial.print(" / UV Intensity (mW/cm^2): ");
-  Serial.print(uvIntensity);
 
   if (humedad >= 120) {
     digitalWrite(12, LOW);
@@ -233,24 +166,8 @@ void Lavanda() {
 
     u8g.drawStr(0, 10, "Lavanda");
 
-    u8g.drawStr(0, 20, "Humedad: ");
-    char texto[7];
-    itoa(humedad, texto, 10);
-    u8g.drawStr(50, 20, texto);
-    u8g.drawStr(60, 20, "%");
-
-    u8g.drawStr(0, 30, "Temp.:");
-    char Ctemp[7];
-    itoa(tempC, Ctemp, 10);
-    u8g.drawStr(60, 30, Ctemp);
-    u8g.drawStr(75, 30, "°C");
-
-    u8g.drawStr(0, 30, "UV Ray Intensity");
-    char uv[7];
-    itoa(uvIntensity, uv, 10);
-    u8g.drawStr(40, 30, uv);
-    u8g.drawStr(80, 30, "mW/cm^2");
-
+    drawDatos();
+    
     if (tempC > -15 && tempC < 30) {
       u8g.drawStr(0, 50, "Dejar la planta");
     }
@@ -263,28 +180,8 @@ void Lavanda() {
 
 void Cactus() {
 
-  Serial.println("Cactus");
   int humedad = analogRead(SensorPin);
   Serial.println(humedad);
-
-
-  Serial.print("Humedad Relativa: ");
-  Serial.print(humidity);
-  Serial.print("% / Temperatura: ");
-  Serial.print(tempC);
-  Serial.print("ºC / ");
-  Serial.print(tempF);
-  Serial.println("ºF");
-
-  Serial.print("output: ");
-  Serial.print(refLevel);
-  Serial.print("ML8511 output: ");
-  Serial.print(uvLevel);
-  Serial.print(" / ML8511 voltage: ");
-  Serial.print(outputVoltage);
-  Serial.print(" / UV Intensity (mW/cm^2): ");
-  Serial.print(uvIntensity);
-
 
   if (humedad >= 50) {
     digitalWrite(12, LOW);
@@ -299,24 +196,8 @@ void Cactus() {
 
     u8g.drawStr(0, 0, "Cactus");
 
-    u8g.drawStr(0, 10, "Humedad: ");
-    char texto[7];
-    itoa(humedad, texto, 10);
-    u8g.drawStr(50, 10, texto);
-    u8g.drawStr(60, 10, "%");
-
-    u8g.drawStr(0, 20, "Temp.:");
-    char Ctemp[7];
-    itoa(tempC, Ctemp, 10);
-    u8g.drawStr(60, 20, Ctemp);
-    u8g.drawStr(75, 20, "°C");
-
-    u8g.drawStr(0, 30, "UV Ray Intensity");
-    char uv[7];
-    itoa(uvIntensity, uv, 10);
-    u8g.drawStr(40, 30, uv);
-    u8g.drawStr(80, 30, "mW/cm^2");
-
+    drawDatos();
+    
     if (tempC > 7) {
       u8g.drawStr(0, 50, "Dejar la planta");
     }
@@ -331,28 +212,7 @@ void Cactus() {
 
 void Frutillas() {
 
-  Serial.println("Frutillas");
   int humedad = analogRead(SensorPin);
-  Serial.println(humedad);
-
-
-  Serial.print("Humedad Relativa: ");
-  Serial.print(humidity);
-  Serial.print("% / Temperatura: ");
-  Serial.print(tempC);
-  Serial.print("ºC / ");
-  Serial.print(tempF);
-  Serial.println("ºF");
-
-  Serial.print("output: ");
-  Serial.print(refLevel);
-  Serial.print("ML8511 output: ");
-  Serial.print(uvLevel);
-  Serial.print(" / ML8511 voltage: ");
-  Serial.print(outputVoltage);
-  Serial.print(" / UV Intensity (mW/cm^2): ");
-  Serial.print(uvIntensity);
-
 
   if (humedad >= 120) {
     digitalWrite(12, LOW);
@@ -367,48 +227,48 @@ void Frutillas() {
 
     u8g.drawStr(0, 10, "Frutillas");
 
-    u8g.drawStr(0, 20, "Humedad: ");
-    char texto[7];
-    itoa(humedad, texto, 10);
-    u8g.drawStr(50, 20, texto);
-    u8g.drawStr(60, 20, "%");
-
-    u8g.drawStr(0, 30, "Temp.:");
-    char Ctemp[7];
-    itoa(tempC, Ctemp, 10);
-    u8g.drawStr(60, 30, Ctemp);
-    u8g.drawStr(75, 30, "°C");
-
-
-    u8g.drawStr(0, 30, "UV Ray Intensity");
-    char uv[7];
-    itoa(uvIntensity, uv, 10);
-    u8g.drawStr(40, 30, uv);
-    u8g.drawStr(80, 30, "mW/cm^2");
-
+    drawDatos();
 
     if (tempC > -15 && tempC < 30) {
-      u8g.drawStr(0, 40, "Dejar la planta");
+      u8g.drawStr(0, 50, "Dejar la planta");
     }
     else  {
-      u8g.drawStr(0, 50, "Entrar la planta");
+      u8g.drawStr(0, 60, "Entrar la planta");
     }
     delay(150);
   } while (u8g.nextPage());
-
 }
 
+void drawDatos() {
+  int humedad = analogRead(SensorPin);
 
-void uiSetup(void) {
-  // configure input keys
+  u8g.drawStr(0, 10, "Humedad: ");
+  char texto[7];
+  itoa(humedad, texto, 10);
+  u8g.drawStr(50, 10, texto);
+  u8g.drawStr(60, 10, "%");
 
+  u8g.drawStr(0, 20, "Temp.:");
+  char Ctemp[7];
+  itoa(tempC, Ctemp, 10);
+  u8g.drawStr(60, 20, Ctemp);
+  u8g.drawStr(75, 20, "°C");
+
+  u8g.drawStr(0, 30, "UV Ray Intensity");
+  char uv[8];
+  itoa(uvIntensity, uv, 10);
+  u8g.drawStr(83, 30, uv);
+  u8g.drawStr(90, 30, "mW/cm^2");
+}
+
+void uiSetup(void) {      // configure input keys
+  
   pinMode(uiKeyPrev, INPUT_PULLUP);    // set pin to input with pullup
   pinMode(uiKeyNext, INPUT_PULLUP);    // set pin to input with pullup
   pinMode(uiKeySelect, INPUT_PULLUP);  // set pin to input with pullup
 }
 
 void uiStep(void) {
-
   uiKeyCodeSecond = uiKeyCodeFirst;
   if (digitalRead(uiKeyPrev) == LOW)
     uiKeyCodeFirst = KEY_PREV;
@@ -425,14 +285,11 @@ void uiStep(void) {
     uiKeyCode = KEY_NONE;
 }
 
-
 #define MENU_ITEMS 5
 const char *menu_strings[MENU_ITEMS] = { "Limonero", "Cerezo", "Cactus", "Lavanda", "Frutillas" };
 uint8_t menu_redraw_required = 0;
-
 uint8_t menu_current = 0;
 uint8_t last_key_code = KEY_NONE;
-
 
 void drawMenu(void) {
   uint8_t i, h;
@@ -442,7 +299,6 @@ void drawMenu(void) {
   u8g.setFontPosTop();
   h = u8g.getFontAscent() - u8g.getFontDescent();
   w = u8g.getWidth();
-
   for (i = 0; i < MENU_ITEMS; i++)
   {
     d = (w - u8g.getStrWidth(menu_strings[i])) / 2;
@@ -452,8 +308,6 @@ void drawMenu(void) {
       u8g.setDefaultBackgroundColor();
     }
     u8g.drawStr(d, i * h, menu_strings[i]);
-
-
   }
 
 }
@@ -489,28 +343,39 @@ void updateMenu(void) {
         switch (menu_current)
         {
           case 0:
+            Serial.print("LIMONERO ");
+            bluetooth();
             Limonero();
             break;
 
           case 1:
+            Serial.print("CEREZO ");
             Cerezo();
+            bluetooth();
             break;
 
           case 2:
+            Serial.print("CACTUS ");
             Cactus();
+            bluetooth();
             break;
 
           case 3:
+            Serial.print("LAVANDA ");
             Lavanda();
+            bluetooth();
             break;
 
           case 4:
+            Serial.print("Frutillas ");
             Frutillas();
+            bluetooth();
             break;
         }
       }
       break;
   }
+  menu_redraw_required = 1;
 }
 
 
@@ -532,6 +397,7 @@ void setup() {
 
 void loop()
 {
+
   int uvLevel = analogRead(UVOUT);
   int refLevel = analogRead(REF_3V3);
   //Use the 3.3V power pin as a reference to get a very accurate output value from sensor
@@ -540,8 +406,9 @@ void loop()
 
   humidity = dht.readHumidity();
   tempC = dht.readTemperature();
+
   uiStep();  // check for key press
-  updateMenu();
+
   if (menu_redraw_required != 0)
   {
     u8g.firstPage();
@@ -552,6 +419,7 @@ void loop()
     } while (u8g.nextPage());
     menu_redraw_required = 0;
   }
+  updateMenu();
 
 
 }
